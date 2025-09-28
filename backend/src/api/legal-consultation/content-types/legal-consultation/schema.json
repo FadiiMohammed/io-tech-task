@@ -1,0 +1,71 @@
+{
+  "kind": "collectionType",
+  "collectionName": "legal_consultations",
+  "info": {
+    "singularName": "legal-consultation",
+    "pluralName": "legal-consultations",
+    "displayName": "Legal Consultation"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "general_heading": {
+      "type": "string"
+    },
+    "corporate_heading": {
+      "type": "string"
+    },
+    "corporate_subHeading": {
+      "type": "string"
+    },
+    "individual_heading": {
+      "type": "string"
+    },
+    "general_content": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "corporate_introText": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "corporate_services": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "individual_introText": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "individual_services": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}
