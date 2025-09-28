@@ -46,7 +46,7 @@ const Service = ({
       try {
         dispatch(showLoader());
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/legal-consultations?locale=${language}`
+          `${process.env.NEXT_PUBLIC_API_URL}/legal-consultations?locale=${language}`
         );
         if (!res.ok) {
           throw new Error('Failed to fetch legal consultation');

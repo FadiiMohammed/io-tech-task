@@ -40,7 +40,7 @@ export default function Testimonials({ language = 'en' }) {
       try {
         dispatch(showLoader());
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/client-overviews?locale=${language}`
+          `${process.env.NEXT_PUBLIC_API_URL}/client-overviews?locale=${language}`
         );
         if (!res.ok) {
           throw new Error('Failed to fetch clients overview');

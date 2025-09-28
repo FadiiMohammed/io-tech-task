@@ -95,7 +95,7 @@ const Search = ({
         const url = query
           ? `${
               process.env.NEXT_PUBLIC_API_URL
-            }/api/team-services?pagination[page]=${currentPage}&pagination[pageSize]=5&filters[service_name][$containsi]=${encodeURIComponent(
+            }/team-services?pagination[page]=${currentPage}&pagination[pageSize]=5&filters[service_name][$containsi]=${encodeURIComponent(
               query
             )}&locale=${language}`
           : `${process.env.NEXT_PUBLIC_API_URL}/api/team-services?pagination[page]=${currentPage}&pagination[pageSize]=5&locale=${language}`;

@@ -51,7 +51,7 @@ export default function OurTeam({ language = 'en' }) {
       try {
         dispatch(showLoader());
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/team-members?populate=image&locale=${language}`
+          `${process.env.NEXT_PUBLIC_API_URL}/team-members?populate=image&locale=${language}`
         );
         if (!res.ok) {
           throw new Error('Failed to fetch team members');

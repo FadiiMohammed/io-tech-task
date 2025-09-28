@@ -53,14 +53,11 @@ const Footer = ({ language = 'en' }) => {
 
   const subscribe = async (email) => {
     dispatch(showLoader());
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/subscribers`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: { email } }),
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/subscribers`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: { email } }),
+    });
 
     const result = await res.json();
     if (!res.ok) {
