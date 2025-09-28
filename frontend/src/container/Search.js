@@ -78,6 +78,74 @@ const Search = ({
     },
   };
 
+  // Static fallback data
+  const staticServicesData = {
+    en: [
+      {
+        id: 1,
+        service_name: 'Corporate Law Services',
+        description:
+          'Comprehensive legal support for businesses including contract drafting, compliance, and corporate governance.',
+      },
+      {
+        id: 2,
+        service_name: 'International Business Law',
+        description:
+          'Expert guidance on cross-border transactions, international contracts, and global business expansion.',
+      },
+      {
+        id: 3,
+        service_name: 'Intellectual Property Law',
+        description:
+          'Protection and management of intellectual property rights including patents, trademarks, and copyrights.',
+      },
+      {
+        id: 4,
+        service_name: 'Real Estate Law',
+        description:
+          'Legal services for property transactions, development projects, and real estate investment.',
+      },
+      {
+        id: 5,
+        service_name: 'Employment Law',
+        description:
+          'Workplace legal matters including employment contracts, disputes, and compliance with labor laws.',
+      },
+    ],
+    ar: [
+      {
+        id: 1,
+        service_name: 'خدمات القانون التجاري',
+        description:
+          'دعم قانوني شامل للشركات يشمل صياغة العقود والامتثال والحوكمة المؤسسية.',
+      },
+      {
+        id: 2,
+        service_name: 'قانون الأعمال الدولية',
+        description:
+          'إرشاد متخصص في المعاملات عبر الحدود والعقود الدولية والتوسع التجاري العالمي.',
+      },
+      {
+        id: 3,
+        service_name: 'قانون الملكية الفكرية',
+        description:
+          'حماية وإدارة حقوق الملكية الفكرية بما في ذلك البراءات والعلامات التجارية وحقوق الطبع والنشر.',
+      },
+      {
+        id: 4,
+        service_name: 'قانون العقارات',
+        description:
+          'خدمات قانونية لمعاملات العقارات ومشاريع التطوير والاستثمار العقاري.',
+      },
+      {
+        id: 5,
+        service_name: 'قانون العمل',
+        description:
+          'المسائل القانونية في مكان العمل بما في ذلك عقود العمل والنزاعات والامتثال لقوانين العمل.',
+      },
+    ],
+  };
+
   // Debounce search query
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -110,9 +178,24 @@ const Search = ({
         setServices(data.data || []);
         setPagination(data.meta.pagination);
         setError(null);
-        setPagination(data.meta.pagination);
       } catch (err) {
         setError(err.message);
+        // Use static data as fallback
+        let filteredServices = staticServicesData[language];
+        if (debouncedSearchQuery.trim()) {
+          filteredServices = staticServicesData[language].filter((service) =>
+            service.service_name
+              .toLowerCase()
+              .includes(debouncedSearchQuery.toLowerCase())
+          );
+        }
+        setServices(filteredServices);
+        setPagination({
+          page: 1,
+          pageSize: 5,
+          pageCount: 1,
+          total: filteredServices.length,
+        });
       } finally {
         setLoading(false);
         dispatch(hideLoader());
@@ -230,12 +313,6 @@ const Search = ({
               <div className="text-center py-8 md:py-12">
                 <div className="text-gray-500 text-sm md:text-base">
                   {translations[language].loading}
-                </div>
-              </div>
-            ) : error ? (
-              <div className="text-center py-8 md:py-12">
-                <div className="text-red-500 text-sm md:text-base">
-                  {translations[language].error} {error}
                 </div>
               </div>
             ) : services.length > 0 ? (

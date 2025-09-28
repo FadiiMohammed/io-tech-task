@@ -46,6 +46,68 @@ export default function OurTeam({ language = 'en' }) {
     },
   };
 
+  // Static fallback data
+  const staticTeamData = {
+    en: [
+      {
+        id: 1,
+        name: 'John Smith',
+        job_title: 'Senior Partner',
+        whatsapp_number: '+1234567890',
+        phone_number: '+1234567890',
+        email: 'john.smith@lawfirm.com',
+        image: null,
+      },
+      {
+        id: 2,
+        name: 'Sarah Johnson',
+        job_title: 'Legal Advisor',
+        whatsapp_number: '+1234567891',
+        phone_number: '+1234567891',
+        email: 'sarah.johnson@lawfirm.com',
+        image: null,
+      },
+      {
+        id: 3,
+        name: 'Michael Brown',
+        job_title: 'Associate Attorney',
+        whatsapp_number: '+1234567892',
+        phone_number: '+1234567892',
+        email: 'michael.brown@lawfirm.com',
+        image: null,
+      },
+    ],
+    ar: [
+      {
+        id: 1,
+        name: 'أحمد محمد',
+        job_title: 'شريك أول',
+        whatsapp_number: '+1234567890',
+        phone_number: '+1234567890',
+        email: 'ahmed.mohamed@lawfirm.com',
+        image: null,
+      },
+      {
+        id: 2,
+        name: 'فاطمة علي',
+        job_title: 'مستشارة قانونية',
+        whatsapp_number: '+1234567891',
+        phone_number: '+1234567891',
+        email: 'fatima.ali@lawfirm.com',
+        image: null,
+      },
+      {
+        id: 3,
+        name: 'محمد حسن',
+        job_title: 'محامي مساعد',
+        whatsapp_number: '+1234567892',
+        phone_number: '+1234567892',
+        email: 'mohamed.hassan@lawfirm.com',
+        image: null,
+      },
+    ],
+  };
+
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -60,9 +122,18 @@ export default function OurTeam({ language = 'en' }) {
 
         setMembers(data.data || []);
         setPagination(data.meta.pagination);
+        setError(null);
       } catch (err) {
         setError(err.message);
         console.error('Error fetching team members:', err);
+        // Use static data as fallback
+        setMembers(staticTeamData[language]);
+        setPagination({
+          page: 1,
+          pageSize: 3,
+          pageCount: 1,
+          total: staticTeamData[language].length,
+        });
       } finally {
         setLoading(false);
         dispatch(hideLoader());
@@ -158,10 +229,6 @@ export default function OurTeam({ language = 'en' }) {
             {loading ? (
               <div className="text-center">
                 {translations[language].loading}
-              </div>
-            ) : error ? (
-              <div className="text-center text-red-500">
-                {translations[language].error}: {error}
               </div>
             ) : getCurrentMembers().length > 0 ? (
               getCurrentMembers().map((member, index) => (

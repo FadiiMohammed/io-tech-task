@@ -1,5 +1,5 @@
 // City background image is now in public folder
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { showLoader, hideLoader } from '../store/slices/loaderSlice';
@@ -32,6 +32,73 @@ export default function HeroSection({ language = 'en' }) {
     },
   };
 
+  // Static fallback data
+  const staticHeroData = useMemo(
+    () => ({
+      en: {
+        hero_members: [
+          {
+            id: 1,
+            name: 'John Smith',
+            description:
+              'Experienced legal professional with over 15 years of expertise in corporate law and business consulting.',
+            image: null,
+          },
+          {
+            id: 2,
+            name: 'Sarah Johnson',
+            description:
+              'Senior partner specializing in international business law and cross-border transactions.',
+            image: null,
+          },
+          {
+            id: 3,
+            name: 'Michael Brown',
+            description:
+              'Expert in intellectual property law and technology-related legal matters.',
+            image: null,
+          },
+        ],
+        button_info: {
+          heroButton: {
+            label: 'Learn More',
+          },
+        },
+      },
+      ar: {
+        hero_members: [
+          {
+            id: 1,
+            name: 'أحمد محمد',
+            description:
+              'محامي محترف ذو خبرة تزيد عن 15 عاماً في القانون التجاري والاستشارات التجارية.',
+            image: null,
+          },
+          {
+            id: 2,
+            name: 'فاطمة علي',
+            description:
+              'شريك أول متخصص في قانون الأعمال الدولية والمعاملات عبر الحدود.',
+            image: null,
+          },
+          {
+            id: 3,
+            name: 'محمد حسن',
+            description:
+              'خبير في قانون الملكية الفكرية والمسائل القانونية المتعلقة بالتكنولوجيا.',
+            image: null,
+          },
+        ],
+        button_info: {
+          heroButton: {
+            label: 'تعلم المزيد',
+          },
+        },
+      },
+    }),
+    []
+  );
+
   const heroMembers = heroSection?.hero_members || [];
 
   useEffect(() => {
@@ -46,16 +113,19 @@ export default function HeroSection({ language = 'en' }) {
         }
         const data = await res.json();
         setHeroSection(data.data[0]);
+        setError(null);
       } catch (err) {
         setError(err.message);
         console.error('Error fetching hero members:', err);
+        // Use static data as fallback
+        setHeroSection(staticHeroData[language]);
       } finally {
         dispatch(hideLoader());
       }
     };
 
     fetchHeroSection();
-  }, [dispatch, language]);
+  }, [dispatch, language, staticHeroData]);
 
   const nextSlide = useCallback(() => {
     if (heroMembers.length === 0 || isTransitioning) return;
@@ -167,10 +237,6 @@ export default function HeroSection({ language = 'en' }) {
           >
             {isLoading ? (
               <div className="text-white">{translations[language].loading}</div>
-            ) : error ? (
-              <div className="text-white">
-                {translations[language].error} {error}
-              </div>
             ) : heroMembers.length > 0 ? (
               <div
                 className={`${

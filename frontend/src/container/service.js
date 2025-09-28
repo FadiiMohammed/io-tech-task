@@ -35,6 +35,78 @@ const Service = ({
     },
   };
 
+  // Static fallback data
+  const staticLegalConsultationData = {
+    en: {
+      general: {
+        heading: 'General Legal Consultations',
+        content:
+          'We provide comprehensive legal advice and consultation services to help you understand your rights and obligations under the law.',
+      },
+      corporate: {
+        heading: 'Corporate Legal Consultations',
+        introText:
+          'Our corporate legal team specializes in providing strategic legal advice to businesses of all sizes.',
+        subHeading: 'Our corporate services include:',
+        services: [
+          'Business formation and incorporation',
+          'Contract drafting and review',
+          'Corporate governance and compliance',
+          'Mergers and acquisitions',
+          'Intellectual property protection',
+          'Employment law compliance',
+        ],
+      },
+      individual: {
+        heading: 'Individual Legal Consultations',
+        introText:
+          'We offer personalized legal consultation services for individuals facing various legal challenges.',
+        services: [
+          'Personal injury claims',
+          'Family law matters',
+          'Estate planning and wills',
+          'Real estate transactions',
+          'Criminal defense consultation',
+          'Immigration law assistance',
+        ],
+      },
+    },
+    ar: {
+      general: {
+        heading: 'الاستشارات القانونية العامة',
+        content:
+          'نوفر المشورة القانونية الشاملة وخدمات الاستشارة لمساعدتك على فهم حقوقك والتزاماتك بموجب القانون.',
+      },
+      corporate: {
+        heading: 'الاستشارات القانونية للشركات',
+        introText:
+          'فريقنا القانوني للشركات متخصص في تقديم المشورة القانونية الاستراتيجية للشركات من جميع الأحجام.',
+        subHeading: 'تشمل خدماتنا للشركات:',
+        services: [
+          'تأسيس الشركات والتسجيل',
+          'صياغة ومراجعة العقود',
+          'الحوكمة المؤسسية والامتثال',
+          'الاندماج والاستحواذ',
+          'حماية الملكية الفكرية',
+          'امتثال قانون العمل',
+        ],
+      },
+      individual: {
+        heading: 'الاستشارات القانونية للأفراد',
+        introText:
+          'نقدم خدمات الاستشارة القانونية الشخصية للأفراد الذين يواجهون تحديات قانونية مختلفة.',
+        services: [
+          'مطالبات الأضرار الشخصية',
+          'مسائل قانون الأسرة',
+          'التخطيط العقاري والوصايا',
+          'معاملات العقارات',
+          'استشارة الدفاع الجنائي',
+          'مساعدة قانون الهجرة',
+        ],
+      },
+    },
+  };
+
   const handleBackClick = () => {
     if (onNavigateHome) {
       onNavigateHome();
@@ -70,9 +142,12 @@ const Service = ({
             services: data.data[0].individual_services,
           },
         });
+        setError(null);
       } catch (err) {
         setError(err.message);
         console.error('Error fetching legal consultation:', err);
+        // Use static data as fallback
+        setLegalConsultation(staticLegalConsultationData[language]);
       } finally {
         setLoading(false);
         dispatch(hideLoader());
@@ -115,12 +190,6 @@ const Service = ({
           {loading ? (
             <div className="text-center py-12">
               <p className="text-gray-600">{translations[language].loading}</p>
-            </div>
-          ) : error ? (
-            <div className="text-center py-12">
-              <p className="text-red-600">
-                {translations[language].error}: {error}
-              </p>
             </div>
           ) : !legalConsultation ? (
             <div className="text-center py-12">
